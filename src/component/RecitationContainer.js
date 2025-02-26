@@ -533,6 +533,7 @@ const RecitationContainer = () => {
 
               <FeedbackForm />
             </Box>
+           
           </Box>
         ) : (
           // ---------------- INITIAL MODE ----------------
@@ -585,9 +586,31 @@ const RecitationContainer = () => {
             >
               Start Translating
             </Box>
+            <Box sx={{ marginTop: "30px" }}>
+              <Box 
+                sx={{
+                  margin:"0 auto",
+                  display:"flex",
+                  justifyContent:"center",
+                  alignItems:"center",
+                  width:"100%",
+                }}
+              >
+                <iframe 
+                style={{
+                  width:"635px",
+                  minHeight:"225px",
+                }}
+                  src="https://docs.google.com/document/d/e/2PACX-1vTH9K0JcUaxkMm_D_9PaLOAOW1qtCde9PWmkFYg2VMkIw6EdBLoQJZB9NQGbbkjVHG1SckimZF-R3XK/pub?embedded=true"
+                />
+              </Box>
+            </Box>
           </Box>
+          
         )}
+        
       </Box>
+      
     </Box>
   );
 };
