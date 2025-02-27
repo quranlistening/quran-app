@@ -610,8 +610,8 @@ const RecitationContainer = () => {
               <Button
                 onClick={handleDevClick}
                 sx={{
-                  color: '#fff',
-                  textDecoration: 'underline',
+                  color: '#999696',
+                  textDecoration: 'none',
                   cursor: 'pointer',
                   backgroundColor: 'transparent',
                   '&:hover': {
