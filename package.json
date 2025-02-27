@@ -7,7 +7,7 @@
     "@emotion/styled": "^11.13.0",
     "@mui/icons-material": "^6.1.2",
     "@mui/joy": "^5.0.0-beta.48",
-    "@mui/material": ""^6.1.8",
+    "@mui/material": "^6.1.8",
     "@stream-io/audio-filters-web": "^0.2.2",
     "@stream-io/video-react-sdk": "^1.10.6",
     "@testing-library/jest-dom": "^5.17.0",
