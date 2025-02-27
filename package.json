@@ -5,7 +5,7 @@
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
-    "@mui/icons-material": "^6.1.2",
+    "@mui/icons-material": "^6.4.6",
     "@mui/joy": "^5.0.0-beta.48",
     "@mui/material": "^5.13.0",
     "@stream-io/audio-filters-web": "^0.2.2",
@@ -20,6 +20,7 @@
     "react-audio-visualize": "^1.2.0",
     "react-audio-voice-recorder": "^2.2.0",
     "react-dom": "^18.3.1",
+    "react-router-dom": "^7.2.0",
     "react-scripts": "5.0.1",
     "string-similarity": "^4.0.4",
     "wavesurfer.js": "^7.9.0",

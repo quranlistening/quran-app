@@ -176,6 +176,7 @@ export const RecitationProvider = ({ children }) => {
       quranData, // Assuming this is also provided
       ROLLING_WINDOW_SIZE,
       setPreviousAyaList,
+      previousAyaList,
       isMutedRef,
       ttsRate,
       language,

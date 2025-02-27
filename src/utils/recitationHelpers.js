@@ -261,6 +261,7 @@ export const processRecognition = (transcript, resetter, params) => {
     isMutedRef,
     ttsRate,
     language,
+    previousAyaList,
   } = params;
 
   if (!currentSurahData?.current?.verses) {
@@ -279,10 +280,8 @@ export const processRecognition = (transcript, resetter, params) => {
   }));
 
   const normalizedTranscript = normalizeArabicText(transcript);
-  console.log("searchableVerses>>>", normalizedTranscript);
   const fuseInstance = fuseInstanceFn(searchableVerses, 0.3);
   const results = findMultipleMatches(normalizedTranscript, fuseInstance);
-  console.log("results123>>>", results);
   results?.forEach((el) => {
     
     if (processedVersesRef.current?.has(el?.verseId)) return;
@@ -296,14 +295,19 @@ export const processRecognition = (transcript, resetter, params) => {
       setTranslations([el?.translation]);
       translationsArray.current?.add(el?.translation);
 
-      if (el?.verseId !== currentSurahData?.current?.verses?.length) {
+      // Add check for repeated verses
+      const isRepeatedVerse = previousAyaList.length > 0 && 
+        previousAyaList[previousAyaList.length - 1].verseId === el?.verseId &&
+        previousAyaList[previousAyaList.length - 1].surahId === currentSurahData?.current?.surahId;
+
+      // Only speak if it's not the last verse and not a repeated verse within a short time window
+      if (el?.verseId !== currentSurahData?.current?.verses?.length && !isRepeatedVerse) {
         speakTranslation(el?.translation, {
           isMutedRef,
           ttsRate: ttsRate.current,
           language,
         });
       }
-      console.log("setPreviousAyaList in processRecognition");
       setPreviousAyaList((prev) => [
         ...prev,
         { ...el, surahId: currentSurahData?.current?.surahId },
@@ -318,10 +322,8 @@ export const processRecognition = (transcript, resetter, params) => {
       el?.verseId
     );
   });
-  console.log("lastAyahIdRef.current", lastAyahIdRef.current);
 
   if (lastAyahIdRef.current === currentSurahData?.current?.verses?.length) {
-    console.log("Reached last verse of surah");
     translationRecognizedTextRef.current = "";
     setTranslations([]);
 

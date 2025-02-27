@@ -1,194 +1,70 @@
-# Real-time Quran Listening & Translation Application
+# Getting Started with Create React App
 
-Welcome to the **Real-time Quran Listening & Translation** app! This project uses the Web Speech API (both **Speech Recognition** and **Speech Synthesis**) to capture live Arabic recitation of the Quran, identify the corresponding verses in real time, and provide translations (in English or Urdu).
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Table of Contents
+## Available Scripts
 
-- [Overview](#overview)
-- [Features](#features)
-- [How It Works](#how-it-works)
-- [Tech Stack](#tech-stack)
-- [Getting Started](#getting-started)
-- [Usage](#usage)
-- [Known Limitations](#known-limitations)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
+In the project directory, you can run:
 
----
+### `npm start`
 
-## Overview
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-1. **Main Objective**  
-   Listen to Arabic recitations, detect surah/ayah live, and display/transmit translations.
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
-2. **Speech Recognition**  
-   Utilizes the browser’s built-in Speech Recognition API (Web Speech API) to capture audio input.
+### `npm test`
 
-3. **Translation**  
-   Converts matched verses into either English or Urdu text and optionally speaks them aloud.
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-4. **UI & Styling**  
-   Powered by React, Material UI, and Joy UI
+### `npm run build`
 
----
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-## Features
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-- **Live Speech Recognition**  
-  Continuously processes Arabic recitation from your microphone.
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-- **Real-Time Verse Detection**  
-  Uses fuzzy matching (Fuse.js) to find the closest Quranic verse to the recognized text.
+### `npm run eject`
 
-- **Text-to-Speech (TTS)**  
-  Speaks out the verse translations (supports muting, unmuting, and rate adjustments).
+**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-- **Device Selection**  
-  Allows selecting different microphones and speakers (limited on iOS).
+If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-- **Feedback Form**  
-  Users can submit feedback or requests for improvement directly from the interface.
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-- **Auto-Adjust TTS Rate**  
-  Dynamically updates reading speed based on the pace of your recitation.
+You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
----
+## Learn More
 
-## How It Works
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-1. **Permissions & Initialization**  
-   Upon clicking “Start Translating,” the app requests microphone access. Once granted, speech recognition begins.
+To learn React, check out the [React documentation](https://reactjs.org/).
 
-2. **Recognition & Normalization**  
-   The recognized Arabic text is stripped of diacritics to maximize matching accuracy.
+### Code Splitting
 
-3. **Verse Matching**  
-   The recognized text is continuously compared against preprocessed Quranic data. When a verse is confidently matched, it’s displayed and spoken (if unmuted).
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-4. **Adaptive TTS**  
-   The app measures the speed of recitation (words per minute) and dynamically adjusts the TTS rate (if “Auto” is checked).
+### Analyzing the Bundle Size
 
-5. **Stopping & Reset**  
-   You can stop listening at any time, or simply refresh the page to reset everything (like reloading your personal translator).
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
----
+### Making a Progressive Web App
 
-## Tech Stack
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-- **React** (CRA)
-- **Material UI + Joy UI** (for component styling)
-- **Web Speech API** (SpeechRecognition & SpeechSynthesis)
-- **Fuse.js** (fuzzy text matching for verse detection)
-- **JavaScript** (primary logic)
-- **HTML / CSS** (styling & layout)
-- **Node / npm** (for dependency management)
+### Advanced Configuration
 
----
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-## Getting Started
+### Deployment
 
-1. **Clone the Repository**
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-   ```bash
-   git clone https://github.com/YourUsername/quranlistening/quran-app.git
+### `npm run build` fails to minify
 
-   ```
-
-2. **Install Dependencies**
-
-   ```bash
-   cd quran-app
-   npm install
-
-   ```
-
-3. **Start the Development Server**
-
-   ```bash
-   npm start
-
-   The app is now live at [http://localhost:3000](http://localhost:3000) (by default).
-   ```
-
----
-
-## Usage
-
-1. **Open the App**  
-   Navigate to the site in your modern browser (Chrome recommended).
-
-2. **Select Language**  
-   Choose English
-
-3. **Microphone Permissions**  
-   Click **Start Translating**; your browser will prompt for microphone access.
-
-4. **Speak or Recite**  
-   Recite Quranic verses. The app attempts to find the corresponding verses.
-
-5. **View & Hear Translations**
-
-   - The last matched verse text shows up on screen (in Arabic).
-   - The translation is read out loud unless muted.
-
-6. **Stop Listening**  
-   Click **Stop Listening** to end recognition (or refresh the page to reset everything).
-
-> **Tip**: If you hear nothing, check your volume, speaker selection, or ensure you’ve not muted the TTS. We can’t do the listening _and_ the hearing for you!
-
----
-
-## Known Limitations
-
-- **Browser Support**  
-  The Web Speech API can be finicky; currently best in Chromium-based browsers (Chrome/Edge). Safari may have partial or limited support.
-
-- **iOS Speaker Selection**  
-  iOS does not allow custom audio device selection.
-
-- **Arabic Diacritics**  
-  Diacritic-based detection might still cause mismatches, especially with partial recitations.
-
-- **Accuracy**  
-  Not a definitive Quran research tool—use with caution. Always verify the recognized verses.
-
-- **Performance**  
-  Real-time matching can be resource-intensive, especially for large data sets.
-
----
-
-## Contributing
-
-Feeling helpful? Want to fix a bug, improve the matching algorithm, or add new translations? Contributions are welcome:
-
-1. **Fork the Repo**
-2. **Create a new branch**
-
-   ```bash
-   git checkout -b feature-awesome-improvement
-
-   ```
-
-3. **Make your changes**, commit, and push
-4. **Open a Pull Request** describing your enhancements
-
----
-
-## License
-
-This project is licensed under an open-source license(MIT Licencse). Feel free to use, adapt, and share responsibly. Remember to keep it respectful and beneficial—spreading knowledge is the goal!
-
----
-
-## Contact
-
-**Developers / Maintainers**
-
-- Your Name (quranlisteningapp@gmail.com)
-
-Or just open an issue in this repository!
-
-If you’d like to contribute major changes or discuss long-term enhancements, we’d love to hear from you. And by all means, if you find any creative bugs or improvements, let us know—bugs don’t fix themselves (though we wish they did).
-
-Thanks for stopping by, and we hope this app helps enhance your Quranic studies! Remember: technology can be helpful, but it’s no substitute for authenticity and deeper comprehension. Keep learning, stay curious, and may your recitations be ever more enlightened.
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
