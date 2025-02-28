@@ -1,4 +1,4 @@
-import { Box, Grid, OutlinedInput } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { useState } from "react";
 import { feedbackBox } from "../styles/VerseTranslationStyle";
 
@@ -6,7 +6,7 @@ export default function FeedbackForm() {
   const [result, setResult] = useState("");
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
-  const [message, setMessage] = useState("");
+  // const [message, setMessage] = useState("");
 
   const onSubmit = async (event) => {
     event.preventDefault();
@@ -21,7 +21,6 @@ export default function FeedbackForm() {
     });
 
     const data = await response.json();
-    console.log("formData", data);
     if (data.success) {
       setResult("Form Submitted Successfully");
       setTimeout(() => {
