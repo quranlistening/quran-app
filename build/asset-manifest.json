@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/static/css/main.3d894b28.css",
-    "main.js": "/static/js/main.0a3d695c.js",
+    "main.js": "/static/js/main.f208306a.js",
     "static/media/mosque2.svg": "/static/media/mosque2.a701390d89fd74da6547a3ba39d195bd.svg",
     "static/media/kalima.svg": "/static/media/kalima.8dfa1d6afc6e2653bafdb97b403b2022.svg",
     "static/media/start-icon.svg": "/static/media/start-icon.666a9b6b331ba3b4949e4a1b1213e67f.svg",
     "index.html": "/index.html",
     "main.3d894b28.css.map": "/static/css/main.3d894b28.css.map",
-    "main.0a3d695c.js.map": "/static/js/main.0a3d695c.js.map"
+    "main.f208306a.js.map": "/static/js/main.f208306a.js.map"
   },
   "entrypoints": [
     "static/css/main.3d894b28.css",
-    "static/js/main.0a3d695c.js"
+    "static/js/main.f208306a.js"
   ]
 }

@@ -141,7 +141,7 @@ const RecitationContainer = () => {
   }, [recognizedText]);
 
   const handleDevClick = () => {
-    navigate('/dev');
+    navigate(`/dev`);
   };
 
   // Render
