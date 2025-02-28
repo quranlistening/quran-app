@@ -9,14 +9,11 @@ import useSpeechRecognition from "../hooks/useSpeechRecognition";
 // Helpers
 import {
   searchInWholeQuran,
-  checkRollingWindowMatch,
   speakTranslation,
   fuseInstanceFn,
   processRecognition,
   bismillahDetection,
   initRollingWindow,
-  findMultipleMatches,
-  loadNextChunk,
 } from "../utils/recitationHelpers";
 
 // Utilities
@@ -28,8 +25,6 @@ import {
   dataForWholeQuranSearchAbleFormat,
 } from "../data/static";
 
-// External library for surah detection
-import Fuse from "fuse.js";
 import { normalizeArabicText } from "../utils/normalizeArabicText";
 /**
  * The RecitationProvider manages all global states and methods
@@ -59,7 +54,6 @@ export const RecitationProvider = ({ children }) => {
   const processedVersesRef = useRef(new Set());
   const lastAyahIdRef = useRef(0);
   const fuseRef = useRef(null);
-  const nextChunkStart = useRef(0);
   const isMutedRef = useRef(true);
   const rollingWindowRef = useRef([]);
   const bismillahFoundRef = useRef(false);
@@ -87,7 +81,7 @@ export const RecitationProvider = ({ children }) => {
   const [pauseStartTime, setPauseStartTime] = useState(null);
   const [totalPausedTime, setTotalPausedTime] = useState(0);
   const [totalArabicWords, setTotalArabicWords] = useState(0);
-  const [currentChunkStart, setCurrentChunkStart] = useState(0);
+  const [currentChunkStart] = useState(0);
 
   // Control flags
   const [flag, setFlag] = useState(false); // "live" mode UI
@@ -99,7 +93,6 @@ export const RecitationProvider = ({ children }) => {
   // --------------- 1) Create Fuse for Surah detection ---------------
 
   useEffect(() => {
-    // Add console.log to debug surahData
     if (!surahData || surahData.length === 0) return;
     const verses = [];
 
@@ -154,7 +147,6 @@ export const RecitationProvider = ({ children }) => {
       translationRecognizedTextRef,
       setTranslations,
       setPreviousAyaList,
-      setRollingWindow,
       stopRecognitionAndReset,
     });
   };
@@ -183,12 +175,7 @@ export const RecitationProvider = ({ children }) => {
     });
   };
 
-  const doLoadNextChunk = (surahLength, surahVerses) => {
-    loadNextChunk(surahLength, surahVerses, {
-      currentSurahData,
-      nextChunkStart,
-    });
-  };
+ 
 
   const doSpeakTranslation = (textToSpeak) => {
     speakTranslation(textToSpeak, {
@@ -234,7 +221,6 @@ export const RecitationProvider = ({ children }) => {
     }
 
     if (!surahFlag.current && surahId.current < 1) {
-      console.log("No surah detected yet, searching for surah...");
 
       // Initialize word queue for progressive matching
       let wordQueue = [];
@@ -245,16 +231,13 @@ export const RecitationProvider = ({ children }) => {
         wordQueue.push(words[i]);
         const searchPhrase = wordQueue.join(" ");
         const normalizedPhrase = normalizeArabicText(searchPhrase);
-        console.log("fuseRef.current>>>", fuseRef.current);
         const fuseResults = fuseRef.current?.search(normalizedPhrase);
-        console.log("fuseResults", fuseResults);
 
         if (fuseResults && fuseResults.length > 0) {
           if (fuseResults.length === 1) {
             // Unique match found
             matchFound = true;
             const foundItem = fuseResults[0].item;
-            console.log("bismillah found:", bismillahFoundRef.current);
             if (foundItem?.id === 0) {
               // bismillahDetection detected
               if (!bismillahFoundRef.current) {
@@ -281,17 +264,11 @@ export const RecitationProvider = ({ children }) => {
               AllahoHoAkbarFoundRef.current = false;
               bismillahFoundRef.current = false;
               const surahDataItem = quranData[foundItem.id - 1];
-              console.log("surahDataItem", surahDataItem);
               currentSurahData.current = surahDataItem;
               
               setSurahName(foundItem?.name);
               surahId.current = foundItem?.id;
-              console.log("surahDataItem", surahDataItem);
-              const surahDataItemNormalizedText = normalizeArabicText(
-                surahDataItem?.verses?.[0]?.text
-              );
-              console.log("setPreviousAyaList in checkForMatches");
-
+              
               setPreviousAyaList((prev) => [
                 ...prev,
                 {
@@ -308,10 +285,8 @@ export const RecitationProvider = ({ children }) => {
                 ttsRate: ttsRate.current,
                 language,
               });
-              console.log("ini>>>", surahDataItem);
               // Initialize rolling window
               const newWindow = initRollingWindow(surahDataItem, 1);
-              console.log("newWindow1>>>", newWindow);
               rollingWindowRef.current = newWindow;
               break;
             }
@@ -337,29 +312,22 @@ export const RecitationProvider = ({ children }) => {
   };
 
   const resetter = () => {
-    console.log("resetter");
     stopRecognition();
-    // Reset Surah states
+    
     surahFlag.current = false;
     surahId.current = 0;
-    // setSurahName("");
 
     // Reset recognized text
-    // setTranslations([]);
     setRecognizedText("");
-    // translationRecognizedTextRef.current = "";
-    // setPreviousAyaList([]);
     currentSurahData.current = null;
     setCurrentVerseIndex(0);
     setRollingWindow([]);
-    // setMatchesFound(false);
 
     // Reset times
     setStartTime(null);
     setPauseStartTime(null);
     setTotalPausedTime(0);
     setTotalArabicWords(0);
-    // setInterruptFlag(false);
     accumulatedTranscriptRef.current = "";
 
     processedVersesRef.current = new Set();
@@ -376,7 +344,6 @@ export const RecitationProvider = ({ children }) => {
     doSpeakTranslation(" ");
 
     if (!isListeningRef.current) {
-      console.log("starting recognition");
       isListeningRef.current = true;
       setFlag(true); // switch UI to "live" mode
       startRecognition(); // from our custom hook

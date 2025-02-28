@@ -1,9 +1,8 @@
 // src/utils/recitationHelpers.js
 
 import { normalizeArabicText } from "./normalizeArabicText";
-import { calculateSimilarity, normatlizedData } from "./quranUtils"; // or wherever you keep it
+import {  normatlizedData } from "./quranUtils"; // or wherever you keep it
 import Fuse from "fuse.js";
-import { useRecitation } from "../context/RecitationProvider"; // Adjust the import path as necessary
 
 /**
  * Search the entire Quran data to find a surah & verse match for the given transcript.
@@ -27,12 +26,7 @@ export function searchInWholeQuran(
     setPreviousAyaList,
   }
 ) {
-  console.log(
-    "Searching in whole Quran with transcript:",
-    dataForWholeQuranSearchAbleFormat
-  );
   const searchableVerses = normatlizedData(dataForWholeQuranSearchAbleFormat);
-  console.log("searchableVerses>>>", searchableVerses);
   const fuse = new Fuse(searchableVerses, {
     keys: ["normalizedText"],
     threshold: 0.3,
@@ -40,32 +34,24 @@ export function searchInWholeQuran(
   });
 
   const results = fuse?.search(transcript);
-  console.log("Fuse search results:", results);
 
   if (results?.length > 0) {
     const bestMatch = results[0];
-    console.log("Best match found:", bestMatch);
 
     const foundSurahName = bestMatch?.item?.name;
     const foundSurahId = bestMatch?.item?.surahId;
     const verseIndexFound = bestMatch?.item?.verseId;
 
-    console.log("Found match details:", {
-      surahName: foundSurahName,
-      surahId: foundSurahId,
-      verseIndex: verseIndexFound + 1,
-    });
+    
 
     // Set all state at once
     surahFlag.current = true;
     surahId.current = foundSurahId;
     setSurahName(foundSurahName);
     const surahDataItem = quranData[foundSurahId - 1];
-    console.log("Found surah data:", surahDataItem);
     currentSurahData.current = surahDataItem;
     setCurrentVerseIndex(verseIndexFound);
 
-    console.log("verseIndexFound", verseIndexFound);
 
     const newWindow = initRollingWindow(surahDataItem, verseIndexFound);
     rollingWindowRef.current = newWindow;
@@ -105,8 +91,6 @@ export const bismillahDetection = (transcript, speakTranslation, params) => {
   const {
     translationsArray = { current: new Set() }, // Default to an empty Set if undefined
     lastAyahIdRef,
-    translationRecognizedTextRef,
-    setTranslations,
     accumulatedTranscriptRef,
     setPreviousAyaList,
     isMutedRef,
@@ -162,15 +146,11 @@ export const loadNextChunk = (
 
     // Ensure currentSurahData.current is an array
     if (!Array.isArray(currentSurahData.current)) {
-      console.warn(
-        "currentSurahData.current was not an array. Initializing..."
-      );
       currentSurahData.current = [];
     }
 
     // Calculate the end of the current chunk
     const chunkEnd = Math.min(nextChunkStart.current + chunkSize, surahLength);
-    console.log("chunkEnd>>>", chunkEnd);
 
     // Process the next chunk of verses
     const versesChunk = (Array.isArray(surahVerses) ? surahVerses : [])
@@ -193,9 +173,8 @@ export const loadNextChunk = (
 
     // Update next chunk start
     nextChunkStart.current = chunkEnd;
-    console.log("nextChunkStart>>>", nextChunkStart.current);
   } catch (error) {
-    console.error("Error loading next verses chunk:", error);
+    console.log("Error loading next verses chunk:", error);
   }
 };
 
@@ -265,7 +244,7 @@ export const processRecognition = (transcript, resetter, params) => {
   } = params;
 
   if (!currentSurahData?.current?.verses) {
-    console.warn("No valid surah data available");
+    console.log("No valid surah data available");
     return;
   }
 
@@ -330,7 +309,6 @@ export const processRecognition = (transcript, resetter, params) => {
     const synth = window.speechSynthesis;
     const lastTranslation =
       currentSurahData?.current?.verses[lastAyahIdRef.current - 1]?.translation;
-    console.log("lastTranslation", lastTranslation);
     if (synth && lastTranslation) {
       const utterance = new SpeechSynthesisUtterance(lastTranslation);
       utterance.lang = language === "english" ? "en-US" : "ar";
@@ -338,7 +316,6 @@ export const processRecognition = (transcript, resetter, params) => {
       utterance.pitch = 1.0;
       utterance.volume = isMutedRef.current ? 0 : 1;
       utterance.onend = () => {
-        console.log("Final translation finished speaking, resetting...");
         resetter();
       };
       synth.speak(utterance);

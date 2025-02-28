@@ -2,7 +2,6 @@
 import { useEffect, useRef } from "react";
 import { countArabicWords } from "../utils/quranUtils";
 import { normalizeArabicText } from "../utils/normalizeArabicText";
-import { checkRollingWindowMatch } from "../utils/recitationHelpers";
 
 export default function useSpeechRecognition({
   language,

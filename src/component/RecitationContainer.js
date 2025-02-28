@@ -43,21 +43,16 @@ import FeedbackForm from "./FeedbackForm";
 const RecitationContainer = () => {
   const {
     // States
-    isListening,
     recognizedText,
     translationRecognizedTextRef,
-    translations,
     language,
     previousAyaList,
     currentSurahData,
-    rollingWindowRef,
     ttsRate,
     isMutedRef,
     checkdCheckBox,
     matchesFound,
     flag,
-    surahId,
-    lastAyahIdRef,
 
     // Setters
     setLanguage,
@@ -123,21 +118,26 @@ const RecitationContainer = () => {
 
   useEffect(() => {
     setArabicRecognizedText(translationRecognizedTextRef.current);
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [translationRecognizedTextRef.current]);
 
     useEffect(() => {
       setIsMuted(isMutedRef.current);
+       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isMutedRef.current]);
 
   useEffect(() => {
     setTtsRateState(ttsRate.current);
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ttsRate.current]);
 
   // Add effect to hide start text when Arabic is detected
   useEffect(() => {
+    
     if (recognizedText && showStartText) {
       setShowStartText(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [recognizedText]);
 
   const handleDevClick = () => {
@@ -625,9 +625,7 @@ const RecitationContainer = () => {
           </Box>
           
         )}
-        
       </Box>
-      
     </Box>
   );
 };

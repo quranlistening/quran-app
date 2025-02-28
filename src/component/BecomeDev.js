@@ -46,6 +46,7 @@ const BecomeDev = () => {
       }}
     >
       <iframe 
+      title="Document Title"
         style={{
           maxWidth: "625px",
           width: "100%",

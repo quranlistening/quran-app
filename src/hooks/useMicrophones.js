@@ -7,7 +7,7 @@ const useMicrophone = () => {
   const [defaultMic, setDefaultMic] = useState(""); // Built-in default mic
   const [selectedSpeaker, setSelectedSpeaker] = useState(""); // User-selected speaker
   const [defaultSpeaker, setDefaultSpeaker] = useState(""); // Built-in speaker
-  const [stream, setStream] = useState(null);
+  const [stream] = useState(null);
 
   const selectedSpeakerRef = useRef(""); // Keep track of latest selectedSpeaker
 
