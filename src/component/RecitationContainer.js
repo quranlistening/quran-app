@@ -12,6 +12,7 @@ import {
   Checkbox,
 } from "@mui/joy";
 import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
+import { useNavigate } from "react-router-dom";
 
 import kalima from "../assets/img/kalima.svg";
 import mosque from "../assets/img/mosque2.svg";
@@ -82,8 +83,13 @@ const RecitationContainer = () => {
 
   const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent); // Detect iOS
 
+  // Add new state for start text visibility
+  const [showStartText, setShowStartText] = useState(true);
+
   const [arabicRecognizedText, setArabicRecognizedText] = useState("");
   const [isMuted, setIsMuted] = useState(true);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (ayatListRef.current) {
@@ -126,6 +132,17 @@ const RecitationContainer = () => {
   useEffect(() => {
     setTtsRateState(ttsRate.current);
   }, [ttsRate.current]);
+
+  // Add effect to hide start text when Arabic is detected
+  useEffect(() => {
+    if (recognizedText && showStartText) {
+      setShowStartText(false);
+    }
+  }, [recognizedText]);
+
+  const handleDevClick = () => {
+    navigate(`/dev`);
+  };
 
   // Render
   return (
@@ -258,7 +275,7 @@ const RecitationContainer = () => {
                 </Box>
 
                 <Box sx={AyatBox} ref={ayatListRef}>
-                  {matchesFound && (
+                {matchesFound && (
                     <Box sx={{ 
                       direction: "rtl", 
                       color: "#fff",
@@ -269,9 +286,12 @@ const RecitationContainer = () => {
                       backgroundColor: "#1E1F26",
                       padding: "10px",
                       zIndex: 1,
-                     
                     }}>
-                      {recognizedText}
+                      {showStartText ? (
+                        "Start Reciting. Turn on speaker to listen to translation"
+                      ) : (
+                        recognizedText
+                      )}
                     </Box>
                   )}
                   {arabicRecognizedText?.length > 0 && (
@@ -533,6 +553,7 @@ const RecitationContainer = () => {
 
               <FeedbackForm />
             </Box>
+           
           </Box>
         ) : (
           // ---------------- INITIAL MODE ----------------
@@ -585,9 +606,28 @@ const RecitationContainer = () => {
             >
               Start Translating
             </Box>
+            <Box sx={{ marginTop: "30px" }}>
+              <Button
+                onClick={handleDevClick}
+                sx={{
+                  color: '#999696',
+                  textDecoration: 'none',
+                  cursor: 'pointer',
+                  backgroundColor: 'transparent',
+                  '&:hover': {
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                  }
+                }}
+              >
+                Become a developer click here
+              </Button>
+            </Box>
           </Box>
+          
         )}
+        
       </Box>
+      
     </Box>
   );
 };
